@@ -1,0 +1,26 @@
+{
+  "api_endpoint": "https://api.golemio.cz/v2/municipallibraries",
+  "api_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzYwMywiaWF0IjoxNzQ3NjQ4OTQ0LCJleHAiOjExNzQ3NjQ4OTQ0LCJpc3MiOiJnb2xlbWlvIiwianRpIjoiZWQ0YmY4MWUtNTkyZS00MzI3LWJkZjEtOGY1Mjc2ZDNhNzBhIn0.xUKsmyILTjuR377fu7AEK8Tuk8XPlpzVoncldwd39xw",
+  "params": {
+    "latlng": "50.124935,14.457204",
+    "range": 15000,
+    "districts": "praha-4",
+    "limit": 10,
+    "offset": 0,
+    "updatedSince": "2019-05-18T07:38:37.000Z"
+  },
+  "fields": [
+        "id",
+        "name",
+        "street_address",
+        "postal_code",
+        "address_locality",
+        "district",
+        "address_country",
+        "latitude",
+        "longitude",
+       "opening_time"
+    ],
+  "output_format": "json",
+  "output_file": "libraries.json"
+}
