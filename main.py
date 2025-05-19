@@ -1,5 +1,5 @@
-from data_extractor import GolemioExtractorId
-from extractor_ai import GolemioExtractor
+from data_extractor_by_id import GolemioExtractorId
+from extractor_libraries import GolemioExtractor
 
 # Use extractor libraries
 if __name__ == "__main__":
