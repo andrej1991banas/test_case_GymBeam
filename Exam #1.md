@@ -104,7 +104,7 @@ Hierarchia kategórií: DimCategory zachováva hierarchiu cez level_up_category,
 
 DBML kód pre hviezdicové schéma
 Nasledujúci kód definuje hviezdicové schéma, ktoré môže byť použité v dbdiagram.io na vizualizáciu:
-'''sql
+
 Table DimProduct {
   product_id integer [primary key]
   product_name varchar(30) [not null]
@@ -157,7 +157,7 @@ Table FactSales {
   order_status_shipped boolean [default: false]
 }
 
-'''
+
 
 
 
