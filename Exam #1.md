@@ -104,7 +104,7 @@ Hierarchia kategórií: DimCategory zachováva hierarchiu cez level_up_category,
 
 DBML kód pre hviezdicové schéma
 Nasledujúci kód definuje hviezdicové schéma, ktoré môže byť použité v dbdiagram.io na vizualizáciu:
-'''dbml
+```dbml
 Table DimProduct {
   product_id integer [primary key]
   product_name varchar(30) [not null]
@@ -156,7 +156,7 @@ Table FactSales {
   total_price decimal [note: 'quantity * unit_price']
   order_status_shipped boolean [default: false]
 }
-'''
+```
 
 
 
@@ -352,7 +352,7 @@ Denormalizácia znižuje počet spojení (JOINs) v dotazoch, čím zvyšuje výk
 ## 4 Databázové schéma
 Tento dokument obsahuje definíciu databázového schémy vo formáte DBML, ktorá popisuje štruktúru tabuliek a ich vzťahy pre systém správy produktov, kategórií, zákazníkov, regiónov, objednávok, položiek objednávok a transakcií. Schéma je navrhnutá pre použitie v dbdiagram.io na vizualizáciu ER diagramu.
 DBML kód
-'''dbml
+```dbml
 Table Product {
   product_id integer [primary key]
   product_name varchar(30) [not null]
@@ -405,7 +405,7 @@ Table Transactions {
   payment_method varchar [not null]
   price decimal(10,2)
 }
-'''
+```
 
 Popis tabuliek
 
