@@ -12,85 +12,85 @@ Dimenzionálne tabuľky (Dimensions): Obsahujú popisné údaje používané na 
 Faktová tabuľka (Facts): Obsahuje kvantitatívne údaje (metriky) ako predaje, množstvá, ceny.
 
 Dimenzionálne tabuľky
-DimProduct (Produkty)
+**DimProduct (Produkty)**
 
-Zdroj: Tabuľka Product
+Zdroj: *Tabuľka Product*
 Atribúty:
-product_id (integer, primárny kľúč)
-product_name (varchar(30))
-description (varchar(250))
-availability (boolean)
-created_at (timestamp)
-category_id (integer, cudzí kľúč na DimCategory)
+- product_id (integer, primárny kľúč)
+- product_name (varchar(30))
+- description (varchar(250))
+- availability (boolean)
+- created_at (timestamp)
+- category_id (integer, cudzí kľúč na DimCategory)
 
 
 Účel: Umožňuje analýzu predajov podľa produktov (napr. najpredávanejšie produkty, dostupnosť).
 
-DimCategory (Kategórie)
+**DimCategory (Kategórie)**
 
-Zdroj: Tabuľka Category
+Zdroj: *Tabuľka Category*
 Atribúty:
-category_id (integer, primárny kľúč)
-category_name (varchar(50))
-level_up_category (integer, cudzí kľúč na seba, nullable pre hierarchiu)
+- category_id (integer, primárny kľúč)
+- category_name (varchar(50))
+- level_up_category (integer, cudzí kľúč na seba, nullable pre hierarchiu)
 
 
 Účel: Analýza predajov podľa kategórií a ich hierarchie (napr. predaje v hlavných alebo podradených kategóriách).
 
-DimCustomer (Zákazníci)
+**DimCustomer (Zákazníci)**
 
-Zdroj: Tabuľka Customers
+Zdroj: *Tabuľka Customers*
 Atribúty:
-customer_id (integer, primárny kľúč)
-name (varchar(50))
-email (varchar(50))
-address (varchar(250))
-region_id (integer, cudzí kľúč na DimRegion)
-created_at (timestamp)
+- customer_id (integer, primárny kľúč)
+- name (varchar(50))
+- email (varchar(50))
+- address (varchar(250))
+- region_id (integer, cudzí kľúč na DimRegion)
+- created_at (timestamp)
 
 
 Účel: Analýza správania zákazníkov (napr. predaje podľa regiónu, noví vs. starí zákazníci).
 
-DimRegion (Regióny)
+**DimRegion (Regióny)**
 
-Zdroj: Tabuľka Region
+Zdroj: *Tabuľka Region*
 Atribúty:
 region_id (integer, primárny kľúč)
-country (varchar(50))
+- country (varchar(50))
 
 
 Účel: Analýza predajov podľa geografického regiónu alebo krajiny.
 
-DimDate (Čas)
+**DimDate (Čas)**
 
-Zdroj: Generovaná tabuľka na základe časových atribútov (napr. created_at z Orders, Product, Transactions)
+Zdroj: *Generovaná tabuľka na základe časových atribútov (napr. created_at z Orders, Product, Transactions)*
 Atribúty:
-date_id (integer, primárny kľúč)
-date (date)
-year (integer)
-quarter (integer)
-month (integer)
-day (integer)
-weekday (varchar)
+- date_id (integer, primárny kľúč)
+- date (date)
+- year (integer)
+- quarter (integer)
+- month (integer)
+- day (integer)
+- weekday (varchar)
 
 
 Účel: Analýza časových trendov (napr. predaje podľa mesiaca, štvrťroka, dní v týždni).
 
 Faktová tabuľka
-FactSales (Predaje)
+**FactSales (Predaje)**
 
-Zdroj: Tabuľky Orders, Order_items, Transactions
+Zdroj: *Tabuľky Orders, Order_items, Transactions*
 Atribúty:
-order_item_id (integer, primárny kľúč, zo Order_items)
-order_id (integer, cudzí kľúč na Orders)
-product_id (integer, cudzí kľúč na DimProduct)
-customer_id (integer, cudzí kľúč na DimCustomer)
-region_id (integer, cudzí kľúč na DimRegion)
-date_id (integer, cudzí kľúč na DimDate, odvodené z Orders.created)
-quantity (integer, zo Order_items.quantity)
-unit_price (decimal, zo Order_items.unit_price)
-total_price (decimal, vypočítané ako quantity * unit_price)
-order_status_shipped (boolean, zo Orders.order_status_shipped)
+- order_item_id (integer, primárny kľúč, zo Order_items)
+- order_id (integer, cudzí kľúč na Orders)
+- product_id (integer, cudzí kľúč na DimProduct)
+- customer_id (integer, cudzí kľúč na DimCustomer)
+- region_id (integer, cudzí kľúč na DimRegion)
+- date_id (integer, cudzí kľúč na DimDate, odvodené z Orders.created)
+- quantity (integer, zo Order_items.quantity)
+- unit_price (decimal, zo Order_items.unit_price)
+- total_price (decimal, vypočítané ako quantity * unit_price)
+- order_status_shipped (boolean, zo Orders.order_status_shipped)
 
 
 Účel: Umožňuje analýzu predajov podľa času, produktov, kategórií, zákazníkov a regiónov (napr. celkový obrat, počet predaných kusov, predaje podľa regiónu).
@@ -409,22 +409,36 @@ Table Transactions {
 
 Popis tabuliek
 
-Product: Uchováva informácie o produktoch, vrátane názvu, ceny, popisu, dostupnosti a kategórie.
-Category: Uchováva hierarchiu kategórií produktov s možnosťou nadradených kategórií cez level_up_category.
-Customers: Uchováva údaje o zákazníkoch, vrátane mena, e-mailu, adresy a regiónu.
-Region: Uchováva informácie o geografických regiónoch (krajinách).
-Orders: Uchováva informácie o objednávkach zákazníkov, vrátane dátumu vytvorenia a stavu odoslania.
-Order_items: Uchováva položky objednávok, vrátane prepojenia na objednávku, produkt, množstvo a cenu za jednotku.
-Transactions: Uchováva údaje o transakciách spojených s objednávkami, vrátane spôsobu platby a sumy.
+**Product:** Uchováva informácie o produktoch, vrátane názvu, ceny, popisu, dostupnosti a kategórie.
+
+**Category:** Uchováva hierarchiu kategórií produktov s možnosťou nadradených kategórií cez level_up_category.
+
+**Customers:** Uchováva údaje o zákazníkoch, vrátane mena, e-mailu, adresy a regiónu.
+
+**Region:** Uchováva informácie o geografických regiónoch (krajinách).
+
+**Orders:** Uchováva informácie o objednávkach zákazníkov, vrátane dátumu vytvorenia a stavu odoslania.
+
+**Order_items:** Uchováva položky objednávok, vrátane prepojenia na objednávku, produkt, množstvo a cenu za jednotku.
+
+**Transactions:** Uchováva údaje o transakciách spojených s objednávkami, vrátane spôsobu platby a sumy.
 
 Vzťahy
 
 Product ↔ Category: M:1 (jeden produkt patrí do jednej kategórie, jedna kategória môže obsahovať viac produktov).
+
 Category ↔ Category: 1:N (hierarchia – jedna kategória môže byť nadradená viacerým podkategóriám).
+
 Customers ↔ Region: M:1 (jeden zákazník patrí do jedného regiónu, jeden región môže obsahovať viac zákazníkov).
+
 Orders ↔ Customers: 1:N (jedna objednávka patrí jednému zákazníkovi, jeden zákazník môže mať viac objednávok).
+
 Order_items ↔ Orders: 1:N (jedna položka patrí do jednej objednávky, jedna objednávka môže mať viac položiek).
+
 Order_items ↔ Product: 1:N (jedna položka odkazuje na jeden produkt, jeden produkt môže byť v rôznych položkách).
+
 Transactions ↔ Orders: 1:N (jedna transakcia patrí do jednej objednávky, jedna objednávka môže mať viac transakcií).
+
+
 
 
