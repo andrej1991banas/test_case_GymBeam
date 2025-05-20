@@ -2,14 +2,16 @@
 
 ## 1 Návrh dátového modelu v ER diagrame
 
+![Untitled (1)](https://github.com/user-attachments/assets/94855225-b9da-4ec2-8123-809c485e3801)
 
 
 ## 2 Návrh hviezdicového schémy pre analytické potreby
 Tento dokument popisuje návrh dátového modelu vo forme hviezdicového schémy (star schema) pre analýzu predajov podľa času, produktov, kategórií a regiónov. Hviezdicové schéma je optimalizované pre dátové sklady a reporting, s jednou centrálnou faktovou tabuľkou a viacerými dimenzionálnymi tabuľkami.
-Krok 1: Identifikácia dimenzií a faktov
 
-Dimenzionálne tabuľky (Dimensions): Obsahujú popisné údaje používané na filtrovanie a zoskupovanie (napr. produkty, kategórie, zákazníci, regióny, čas).
-Faktová tabuľka (Facts): Obsahuje kvantitatívne údaje (metriky) ako predaje, množstvá, ceny.
+**Krok 1: Identifikácia dimenzií a faktov**
+
+*Dimenzionálne tabuľky (Dimensions):* Obsahujú popisné údaje používané na filtrovanie a zoskupovanie (napr. produkty, kategórie, zákazníci, regióny, čas).
+*Faktová tabuľka (Facts)*: Obsahuje kvantitatívne údaje (metriky) ako predaje, množstvá, ceny.
 
 Dimenzionálne tabuľky
 **DimProduct (Produkty)**
@@ -23,8 +25,8 @@ Atribúty:
 - created_at (timestamp)
 - category_id (integer, cudzí kľúč na DimCategory)
 
-
 Účel: Umožňuje analýzu predajov podľa produktov (napr. najpredávanejšie produkty, dostupnosť).
+
 
 **DimCategory (Kategórie)**
 
@@ -34,8 +36,8 @@ Atribúty:
 - category_name (varchar(50))
 - level_up_category (integer, cudzí kľúč na seba, nullable pre hierarchiu)
 
-
 Účel: Analýza predajov podľa kategórií a ich hierarchie (napr. predaje v hlavných alebo podradených kategóriách).
+
 
 **DimCustomer (Zákazníci)**
 
@@ -48,8 +50,8 @@ Atribúty:
 - region_id (integer, cudzí kľúč na DimRegion)
 - created_at (timestamp)
 
-
 Účel: Analýza správania zákazníkov (napr. predaje podľa regiónu, noví vs. starí zákazníci).
+
 
 **DimRegion (Regióny)**
 
@@ -58,8 +60,8 @@ Atribúty:
 region_id (integer, primárny kľúč)
 - country (varchar(50))
 
-
 Účel: Analýza predajov podľa geografického regiónu alebo krajiny.
+
 
 **DimDate (Čas)**
 
@@ -73,8 +75,8 @@ Atribúty:
 - day (integer)
 - weekday (varchar)
 
-
 Účel: Analýza časových trendov (napr. predaje podľa mesiaca, štvrťroka, dní v týždni).
+
 
 Faktová tabuľka
 **FactSales (Predaje)**
@@ -92,18 +94,13 @@ Atribúty:
 - total_price (decimal, vypočítané ako quantity * unit_price)
 - order_status_shipped (boolean, zo Orders.order_status_shipped)
 
-
 Účel: Umožňuje analýzu predajov podľa času, produktov, kategórií, zákazníkov a regiónov (napr. celkový obrat, počet predaných kusov, predaje podľa regiónu).
 
-Poznámky k návrhu
 
-Hviezdicové schéma: FactSales je centrálna faktová tabuľka, priamo prepojená s dimenziami (DimProduct, DimCategory, DimCustomer, DimRegion, DimDate) cez cudzie kľúče. Toto schéma je jednoduché a optimalizované pre rýchle dotazy.
-Transakcie: Údaje z tabuľky Transactions (napr. price, payment_method) sú agregované do FactSales. Ak je potrebná samostatná analýza transakcií (napr. podľa spôsobu platby), môže byť vytvorená ďalšia faktová tabuľka FactTransactions.
-Hierarchia kategórií: DimCategory zachováva hierarchiu cez level_up_category, čo umožňuje analýzu predajov na rôznych úrovniach kategórií.
-Časová dimenzia: DimDate je kľúčová pre analýzu trendov a mala by byť vopred naplnená dátumami (napr. na niekoľko rokov dopredu).
+
 
 DBML kód pre hviezdicové schéma
-Nasledujúci kód definuje hviezdicové schéma, ktoré môže byť použité v dbdiagram.io na vizualizáciu:
+
 ```dbml
 Table DimProduct {
   product_id integer [primary key]
@@ -159,9 +156,10 @@ Table FactSales {
 ```
 
 
+![Untitled](https://github.com/user-attachments/assets/3d521369-1820-4023-8746-6729c97b97ce)
 
 
-Tento dokument popisuje analýzu dátového modelu definovaného v DBML, vrátane identifikácie primárnych a cudzích kľúčov, úrovne normalizácie a návrhov na denormalizáciu pre optimalizáciu analytických dotazov.
+
 
 ## 3a. Primárne a cudzie kľúče
 
@@ -193,9 +191,6 @@ Cudzie kľúče (FK) definujú vzťahy medzi tabuľkami. Nasledujú cudzie kľú
 - **Transactions**:
   - `order_id` → odkazuje na `Orders.order_id`
 
-### Poznámka
-- V tabuľke `Orders` je drobný preklep v DBML: `customer_id` je definované ako `interger` namiesto `integer`. Toto by malo byť opravené.
-- Predchádzajúca verzia DBML obsahovala nesprávny cudzí kľúč `order_items` v tabuľke `Orders`. V aktuálnej verzii je to opravené, pretože `Order_items.order_id` správne odkazuje na `Orders.order_id`.
 
 ## 3b. Možné normalizačné kroky a úrovne normalizácie
 
@@ -226,7 +221,8 @@ Normalizácia eliminuje redundancie a zabezpečuje konzistenciu dát. Model bol 
    - **Problém**: Atribút `address` (varchar(250)) môže obsahovať rôzne časti adresy (ulica, mesto, krajina), čo vedie k potenciálnej redundancii s `Region.country`.
    - **Riešenie**: Rozdeliť `address` na atribúty: `street`, `city`, `postal_code`. Odstrániť redundanciu s `Region.country`.
    - **Navrhovaná štruktúra**:
-   - 
+
+
      ```dbml
      Table Customers {
        customer_id integer [primary key]
@@ -351,7 +347,8 @@ Denormalizácia znižuje počet spojení (JOINs) v dotazoch, čím zvyšuje výk
 
 ## 4 Databázové schéma
 Tento dokument obsahuje definíciu databázového schémy vo formáte DBML, ktorá popisuje štruktúru tabuliek a ich vzťahy pre systém správy produktov, kategórií, zákazníkov, regiónov, objednávok, položiek objednávok a transakcií. Schéma je navrhnutá pre použitie v dbdiagram.io na vizualizáciu ER diagramu.
-DBML kód
+
+DBML kód:
 ```dbml
 Table Product {
   product_id integer [primary key]
