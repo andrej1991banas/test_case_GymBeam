@@ -104,7 +104,7 @@ Hierarchia kategórií: DimCategory zachováva hierarchiu cez level_up_category,
 
 DBML kód pre hviezdicové schéma
 Nasledujúci kód definuje hviezdicové schéma, ktoré môže byť použité v dbdiagram.io na vizualizáciu:
-
+'''dbml
 Table DimProduct {
   product_id integer [primary key]
   product_name varchar(30) [not null]
@@ -156,7 +156,7 @@ Table FactSales {
   total_price decimal [note: 'quantity * unit_price']
   order_status_shipped boolean [default: false]
 }
-
+'''
 
 
 
@@ -226,6 +226,7 @@ Normalizácia eliminuje redundancie a zabezpečuje konzistenciu dát. Model bol 
    - **Problém**: Atribút `address` (varchar(250)) môže obsahovať rôzne časti adresy (ulica, mesto, krajina), čo vedie k potenciálnej redundancii s `Region.country`.
    - **Riešenie**: Rozdeliť `address` na atribúty: `street`, `city`, `postal_code`. Odstrániť redundanciu s `Region.country`.
    - **Navrhovaná štruktúra**:
+   - 
      ```dbml
      Table Customers {
        customer_id integer [primary key]
@@ -238,6 +239,7 @@ Normalizácia eliminuje redundancie a zabezpečuje konzistenciu dát. Model bol 
        created_at timestamp [default: `now()`]
      }
      ```
+     
    - **Úroveň po kroku**: Plná 3NF, odstránenie tranzitívnej závislosti.
 
 2. **Hierarchia kategórií**:
@@ -261,6 +263,7 @@ Denormalizácia znižuje počet spojení (JOINs) v dotazoch, čím zvyšuje výk
      - Pridať `category_name` a `parent_category_name` do `DimProduct`.
    - **Výhoda**: Eliminuje potrebu spájania s `DimCategory`.
    - **Príklad**:
+     
      ```dbml
      Table DimProduct {
        product_id integer [primary key]
@@ -281,6 +284,7 @@ Denormalizácia znižuje počet spojení (JOINs) v dotazoch, čím zvyšuje výk
      - Pridať `country` do `DimCustomer` z `Region.country`.
    - **Výhoda**: Znižuje počet JOIN operácií pri geografických analýzach.
    - **Príklad**:
+     
      ```dbml
      Table DimCustomer {
        customer_id integer [primary key]
@@ -299,6 +303,7 @@ Denormalizácia znižuje počet spojení (JOINs) v dotazoch, čím zvyšuje výk
      - Pridať `year`, `quarter`, `month` do `FactSales` z `Orders.created`.
    - **Výhoda**: Eliminuje spojenia s `DimDate` pre bežné časové analýzy.
    - **Príklad**:
+     
      ```dbml
      Table FactSales {
        order_item_id integer [primary key]
@@ -323,6 +328,7 @@ Denormalizácia znižuje počet spojení (JOINs) v dotazoch, čím zvyšuje výk
      - Pridať `category_path` (napr. „Electronics > Phones > Smartphones“) do `DimCategory`.
    - **Výhoda**: Umožňuje rýchle filtrovanie podľa hierarchie bez rekurzívnych dotazov.
    - **Príklad**:
+     
      ```dbml
      Table DimCategory {
        category_id integer [primary key]
@@ -346,7 +352,7 @@ Denormalizácia znižuje počet spojení (JOINs) v dotazoch, čím zvyšuje výk
 ## 4 Databázové schéma
 Tento dokument obsahuje definíciu databázového schémy vo formáte DBML, ktorá popisuje štruktúru tabuliek a ich vzťahy pre systém správy produktov, kategórií, zákazníkov, regiónov, objednávok, položiek objednávok a transakcií. Schéma je navrhnutá pre použitie v dbdiagram.io na vizualizáciu ER diagramu.
 DBML kód
-
+'''dbml
 Table Product {
   product_id integer [primary key]
   product_name varchar(30) [not null]
@@ -399,6 +405,7 @@ Table Transactions {
   payment_method varchar [not null]
   price decimal(10,2)
 }
+'''
 
 Popis tabuliek
 
