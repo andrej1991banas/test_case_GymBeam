@@ -1,5 +1,17 @@
 # Golemio Library Data Extractor
-## Overview
+
+## General Overview
+This repository contains scripts, Sql schemas and solutions to tasks for **GymBeam Data Engineer Case Study 2025** for Junior Data  Engineer position at GymBeam. 
+
+**Task 1:**
+  - Exam #1.md
+    
+**Task 2:**
+  - Readme.md (this file)
+    
+**Task 3:**
+  - 
+## Overview Exam #2
 This repository contains a **Python script** designed to extract data about city libraries from the **Golemio API**, as part of the **GymBeam Data Engineer Case Study 2025** (Task 2: Data Integration). The extractor retrieves 10 specified parameters about libraries and is configured to run daily at 7:00 AM Prague time (CEST). 
 
 ## Extracted Parameters
