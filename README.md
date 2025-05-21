@@ -10,7 +10,14 @@ This repository contains scripts, Sql schemas and solutions to tasks for **GymBe
   - Readme.md (this file)
     
 **Task 3:**
-  - 
+  - Exam_3.md (failed due to persisted error)
+
+**Task 4**
+  - Exam_4.md
+
+**Task 5**
+  - Exam_5.md
+
 ## Overview Exam #2
 This repository contains a **Python script** designed to extract data about city libraries from the **Golemio API**, as part of the **GymBeam Data Engineer Case Study 2025** (Task 2: Data Integration). The extractor retrieves 10 specified parameters about libraries and is configured to run daily at 7:00 AM Prague time (CEST). 
 
