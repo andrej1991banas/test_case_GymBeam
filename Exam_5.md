@@ -1,3 +1,15 @@
+# General Overview
+V zmysle znení odporúčaní a osobných skúseností vyplýva jednoznačný záver, že pre konzistenciu dát a dátových procesov sú jendoznačnou prioritou správne nastavené procesy na úrovni plánovania. 
+Wokrflow  a biznis procesy, ktoré sú nastavené ako strategické rozhodutie vedia zastrešiť potreby viacerých zložiek spoločnosti a premietnuť tak svoje očakávania a potreby na dátové formáty, reporty či valiádcie, priamo do eistujúcich dátových štruktúr.
+Tým sa nielenže zlepšuje kvalita dát a ich efektívne využitie. Eliminuje sa aj možnosť ľudského faktora.
+
+Z môjho pohľadu je teda nutné nastaviť pravidlá a dátové formáty na základe dlhodobej stratégie spoločnosti. Pre spoločnosť ako GymBeam je tieto modely potrebné plánovať s víziou a očakávaním v 5 a viac ročnom horizonte, aby boli modely a dátové formáty pripravené práve pre plánovanú situáciu a zároveň fungovali spoľahlivo v reálnom čase.
+
+## Osobná skúsenosť: 
+Kolega vzdelaný v oblasti dátovej analytiky a programovania vytvoril dátový model, ktorý udelil čísla faktúr na jendotlivé dáta. V neznalosti účtovníctva vytvoril tak dátový formát, ktorý nebol v súlade s potrebou účtovného oddelenia a bolo nutné vytvárať opravné skripty, aby túto chybu opravovali v reálnom čase. 
+Premazanie skriptov sa udialo pred účtovnou úzávierkou pre daň z pridanej hodnoty, bolo nutné dáta obnovovať, čo spôsobilo zdržanie a nutnú úpravu skriptov. 
+
+
 # 1. Používanie hardcoded hodnôt v ETL procesoch pre biznis pravidlá
 ## Osvedčený postup? 
 **Nie.**
@@ -6,7 +18,7 @@ Hardcoded hodnoty sú nepružné, zvyšujú riziko chýb pri zmene pravidiel a k
 ## Odporúčanie: 
 Ukladajte biznis pravidlá v konfiguračných súboroch, databázových tabuľkách alebo parametroch ETL nástroja. To umožňuje dynamické zmeny bez úpravy kódu.
 ## Osobná skúsenosť: 
-Hardcored daňové sadzby v projekte, ktkoré museli byť menené.
+Hardcored nastavená mena pri pôsobení spoločnosti na jednom trhu spôsobila problémy pri expanzii do zahraničia  a nutnosti previesť dáta na lokálnu menu. 
 # 2. Neindexovanie stĺpcov, ktoré sú často dotazované vo veľkých tabuľkách
 ## Osvedčený postup? 
 **Nie.**
