@@ -436,6 +436,49 @@ Order_items ↔ Product: 1:N (jedna položka odkazuje na jeden produkt, jeden pr
 
 Transactions ↔ Orders: 1:N (jedna transakcia patrí do jednej objednávky, jedna objednávka môže mať viac transakcií).
 
+## Diskusia na záver
 
+# Aké kompromisy by ste spravili medzi normalizáciou a výkonnosťou?
+- z pohľadu  normalizácie by som premýšľal nad rozzdelením **Customers.address** pre transakčné systémy, aktualizácie historických zmien a konzistenciu dát
+- z pohľadu výkonosti pridať napríklad **category_name, country, year** do tabuliek pre zrýchlenie dotazov, elimináciu JOIN metód
+  
+# Ako by ste riešili historické zmeny (napr. zmena ceny produktu, adresa zákazníka)?
+- premýšľal by som čo si v danom momente môžem dovoliť a pri zmenách sa snažil zachovať historické údaje
+- teda pri zmene ceny produktu vytvoriť nový produkt s údajmi starého a zmenenou cenou, pri starom produkte pridať položku **cena_platná_do** a vďaka tomu filtrovať výstupné dáta alebo dáta pre porovnanie historických predajov toho istého produktu pri rozdielnej cene
+- pri zmene adresy zákazníka pri totožnom procese sledovať jeho historické nákupy s tými aktuálnymi
+- tento postup by však vyvinul veľké požiadavky na systém a úložisko
 
+- druhá možnosť by bola doplniť do tabuľky produktov položky "cena_platná_od" a "cena_platná_do" a na základe nich filtrovať výstupy
+- tento spôsob by šetril miesto na úložiskua avšak komplikoval by samotné skripty
 
+  
+# Aké indexy by ste pridali na zlepšenie výkonnosti dotazov?
+ - index na product_id, customer_id, region_id, date_id (cudzie kľúče), pretože sú často používané vo filtroch a JOINoch.
+ ```plain
+   CREATE INDEX idx_factsales_product_id ON FactSales (product_id);
+CREATE INDEX idx_factsales_customer_id ON FactSales (customer_id);
+CREATE INDEX idx_factsales_region_id ON FactSales (region_id);
+CREATE INDEX idx_factsales_date_id ON FactSales (date_id);
+```
+ - index na order_status_shipped (boolean) pre rýchle filtrovanie odoslaných/neodoslaných objednávok
+```plain
+CREATE BITMAP INDEX idx_factsales_status ON FactSales (order_status_shipped);
+```
+ - B-tree index na category_id pre rýchle spojenie s DimCategory
+```plain
+CREATE INDEX idx_dimproduct_category_id ON DimProduct (category_id);
+```
+ - B-tree index na region_id pre analýzy podľa regiónu
+  ```plain
+   CREATE INDEX idx_dimcustomer_region_id ON DimCustomer (region_id);
+```
+- B-tree index na year, quarter, month pre rýchle časové agregácie
+```plain
+  CREATE INDEX idx_dimdate_year_month ON DimDate (year, month);
+```
+- ak sú pridané category_name, country, year atď., vytvoriť indexy na tieto stĺpce pre rýchle filtrovanie
+```plain
+  CREATE INDEX idx_dimproduct_category_name ON DimProduct (category_name);
+CREATE INDEX idx_dimcustomer_country ON DimCustomer (country);
+CREATE INDEX idx_factsales_year_month ON FactSales (year, month);
+```
